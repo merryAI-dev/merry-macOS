@@ -1,0 +1,19 @@
+{
+  "name": "printer-launcher-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/styles.css -o ./public/app.css --minify",
+    "start": "npm run build:css && node server.js",
+    "dev": "npm run build:css && node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.13",
+    "tailwindcss": "^4.1.13"
+  }
+}

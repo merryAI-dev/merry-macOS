@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #ffffff;
+  --color-ink: #111827;
+  --color-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-panel: #f8fafc;
+  --color-accent: #0f62fe;
+  --color-accent-soft: #dbeafe;
+}
+
+@layer base {
+  html, body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+
+  body {
+    font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply min-h-screen bg-slate-50;
+  }
+
+  .topbar {
+    @apply border-b border-slate-200 bg-white;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+  }
+
+  .panel-title {
+    @apply text-lg font-semibold text-slate-900;
+  }
+
+  .muted {
+    @apply text-sm text-slate-500;
+  }
+
+  .primary-btn {
+    @apply inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:bg-slate-300;
+  }
+
+  .secondary-btn {
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50;
+  }
+
+  .preset-btn {
+    @apply flex w-full items-center gap-4 rounded-2xl border border-slate-200 bg-white px-4 py-4 text-left transition hover:border-blue-300 hover:bg-blue-50 disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-400;
+  }
+
+  .dropzone {
+    @apply flex min-h-[320px] flex-col items-center justify-center rounded-[28px] border-2 border-dashed border-slate-300 bg-white px-10 text-center transition;
+  }
+
+  .dropzone-target {
+    @apply border-blue-500 bg-blue-50;
+  }
+
+  .statusbar {
+    @apply border-t border-slate-200 bg-white px-6 py-4 text-sm text-slate-700;
+  }
+}

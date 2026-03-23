@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Printer Launcher Web</title>
+    <link rel="stylesheet" href="/app.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="mx-auto flex max-w-[1440px] items-center gap-3 px-6 py-4">
+          <button id="openButton" class="primary-btn">PDF 열기</button>
+          <button id="statusButton" class="secondary-btn">큐 상태 확인</button>
+          <div class="ml-auto text-right">
+            <div id="selectedFileName" class="text-sm font-semibold text-slate-900">선택된 PDF 없음</div>
+            <div id="selectedFileMeta" class="muted">파일을 열거나 드래그하세요.</div>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto grid max-w-[1440px] grid-cols-1 gap-0 lg:grid-cols-[minmax(0,1fr)_380px]">
+        <section class="min-h-[calc(100vh-129px)] border-r border-slate-200 bg-slate-50 p-6">
+          <div id="previewPanel" class="flex h-full items-center justify-center">
+            <div id="emptyState" class="flex w-full max-w-4xl flex-col items-center gap-6">
+              <div class="space-y-2 text-center">
+                <h1 class="text-3xl font-semibold tracking-tight text-slate-900">PDF 선택 후 바로 인쇄</h1>
+                <p class="mx-auto max-w-xl text-base text-slate-500">
+                  PDF를 선택하거나 이 영역에 드래그하세요. Tailwind 기반 로컬 인쇄 화면입니다.
+                </p>
+              </div>
+
+              <button id="heroOpenButton" class="primary-btn">PDF 열기</button>
+
+              <div id="dropzone" class="dropzone w-full max-w-3xl">
+                <div class="space-y-3">
+                  <div class="text-2xl font-semibold text-slate-900">여기에 PDF 드래그</div>
+                  <div class="text-sm text-slate-500">놓으면 첫 페이지를 미리보고 바로 인쇄할 수 있습니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <div id="previewState" class="hidden w-full">
+              <div class="panel mx-auto flex max-w-5xl flex-col gap-4 p-5">
+                <div>
+                  <h2 class="panel-title">첫 페이지 미리보기</h2>
+                  <p class="muted">브라우저 내장 PDF 렌더링으로 첫 화면을 확인합니다.</p>
+                </div>
+                <iframe
+                  id="pdfFrame"
+                  title="PDF Preview"
+                  class="h-[78vh] w-full rounded-xl border border-slate-200 bg-white"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <aside class="min-h-[calc(100vh-129px)] bg-slate-100 p-6">
+          <div class="space-y-5">
+            <section class="panel p-5">
+              <h2 class="panel-title">맞춤 인쇄</h2>
+              <p class="muted mt-1">양면, 흑백, 2-up을 원하는 조합으로 고른 뒤 위자드에서 한 번 더 확인합니다.</p>
+
+              <div class="mt-4 space-y-4">
+                <label class="block">
+                  <div class="mb-1.5 text-sm font-medium text-slate-800">면 설정</div>
+                  <select id="customDuplex" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+                    <option value="long-edge">양면</option>
+                    <option value="one-sided">단면</option>
+                    <option value="short-edge">양면 짧은쪽 넘김</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <div class="mb-1.5 text-sm font-medium text-slate-800">색상</div>
+                  <select id="customColorMode" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+                    <option value="color">컬러</option>
+                    <option value="mono">흑백</option>
+                  </select>
+                </label>
+
+                <label class="block">
+                  <div class="mb-1.5 text-sm font-medium text-slate-800">레이아웃</div>
+                  <select id="customNumberUp" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none">
+                    <option value="1">한 장에 한 페이지</option>
+                    <option value="2">한 장에 두 페이지</option>
+                  </select>
+                </label>
+
+                <button id="customPrintButton" class="primary-btn w-full">맞춤 위자드 열기</button>
+              </div>
+            </section>
+
+            <section class="panel p-5">
+              <h2 class="panel-title">사용 흐름</h2>
+              <div class="mt-3 space-y-2 text-sm text-slate-700">
+                <div>1. PDF를 엽니다.</div>
+                <div>2. `맞춤 인쇄`에서 양면/흑백/2-up을 조합합니다.</div>
+                <div>3. 위자드에서 설정을 확인한 뒤 마지막 버튼으로만 인쇄합니다.</div>
+                <div>4. 필요하면 큐 상태를 확인합니다.</div>
+              </div>
+            </section>
+
+            <section class="panel p-5">
+              <h2 class="panel-title">연결 정보</h2>
+              <div class="mt-3 space-y-2 text-sm text-slate-700">
+                <div>큐: <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs">_6l85k35m5_j80</code></div>
+                <div>기본 옵션 소스: <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs">global-vendor-default</code></div>
+                <div>하네스: <code class="rounded bg-slate-100 px-1.5 py-0.5 text-xs">printer_harness.py</code></div>
+              </div>
+            </section>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="statusbar">
+        <div id="statusText">PDF를 열고 맞춤 인쇄 설정을 고르세요.</div>
+      </footer>
+    </div>
+
+    <input id="fileInput" type="file" accept="application/pdf,.pdf" class="hidden" />
+
+    <div id="wizardOverlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/45 px-6 py-10">
+      <div class="w-full max-w-2xl rounded-3xl bg-white shadow-2xl">
+        <div class="border-b border-slate-200 px-6 py-5">
+          <div class="text-2xl font-semibold text-slate-900">맞춤 인쇄 위자드</div>
+          <div class="mt-1 text-sm text-slate-500">설정을 한 번 더 확인한 뒤 마지막 단계에서만 실제 인쇄를 보냅니다.</div>
+        </div>
+
+        <div class="space-y-5 px-6 py-6">
+          <section class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+            <div class="text-sm font-semibold text-slate-900">선택한 파일</div>
+            <div id="wizardFileName" class="mt-2 text-base text-slate-900">선택된 PDF 없음</div>
+            <div id="wizardFileMeta" class="mt-1 text-sm text-slate-500">파일 정보를 불러올 수 없습니다.</div>
+          </section>
+
+          <section class="grid gap-4 md:grid-cols-3">
+            <div class="rounded-2xl border border-slate-200 bg-white p-4">
+              <div class="text-sm font-medium text-slate-500">면 설정</div>
+              <div id="wizardDuplex" class="mt-2 text-base font-semibold text-slate-900">양면</div>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-4">
+              <div class="text-sm font-medium text-slate-500">색상</div>
+              <div id="wizardColorMode" class="mt-2 text-base font-semibold text-slate-900">컬러</div>
+            </div>
+            <div class="rounded-2xl border border-slate-200 bg-white p-4">
+              <div class="text-sm font-medium text-slate-500">레이아웃</div>
+              <div id="wizardNumberUp" class="mt-2 text-base font-semibold text-slate-900">한 장에 한 페이지</div>
+            </div>
+          </section>
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="flex items-center justify-between gap-3">
+              <div>
+                <div class="text-sm font-semibold text-slate-900">큐 확인</div>
+                <div class="mt-1 text-sm text-slate-500">원하면 이 단계에서 현재 큐 상태를 먼저 봅니다.</div>
+              </div>
+              <button id="wizardQueueButton" class="secondary-btn">큐 상태 확인</button>
+            </div>
+            <div id="wizardQueueStatus" class="mt-3 rounded-xl bg-slate-50 px-3 py-3 text-sm whitespace-pre-line text-slate-700">아직 조회하지 않았습니다.</div>
+          </section>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 border-t border-slate-200 px-6 py-5">
+          <button id="wizardCancelButton" class="secondary-btn">취소</button>
+          <button id="wizardConfirmButton" class="primary-btn">이 설정으로 인쇄</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/app.js"></script>
+  </body>
+  </html>

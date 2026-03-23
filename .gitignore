@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Node
+node_modules/
+.npm/
+
+# Swift / Xcode
+.build/
+dist/
+*.xcodeproj/
+*.xcworkspace/
+DerivedData/
+
+# macOS
+.DS_Store
+
+# 환경변수
+.env
+.env.local
+.env.*.local
+
+# 로그
+*.log
