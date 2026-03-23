@@ -23,13 +23,22 @@ struct PrintService: Sendable {
     let presetSource: String
 
     init(
-        harnessURL: URL = URL(fileURLWithPath: "/Users/boram/printer-harness/printer_harness.py"),
+        harnessURL: URL = Self.defaultHarnessURL(),
         queueName: String = "_6l85k35m5_j80",
         presetSource: String = "global-vendor-default"
     ) {
         self.harnessURL = harnessURL
         self.queueName = queueName
         self.presetSource = presetSource
+    }
+
+    private static func defaultHarnessURL() -> URL {
+        // 앱 번들 안의 리소스 우선 탐색
+        if let bundled = Bundle.main.url(forResource: "printer_harness", withExtension: "py") {
+            return bundled
+        }
+        // 개발 환경 fallback
+        return URL(fileURLWithPath: "/Users/boram/printer-harness/printer_harness.py")
     }
 
     func printFile(_ fileURL: URL, preset: PrintPreset) throws -> String {

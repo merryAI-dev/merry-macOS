@@ -16,6 +16,12 @@ rm -rf "$DIST_DIR"
 mkdir -p "$MACOS_DIR" "$RESOURCES_DIR"
 cp "$BUILD_DIR/$APP_NAME" "$MACOS_DIR/$APP_NAME"
 
+# SPM 번들 리소스 복사 (printer_harness.py 등)
+BUNDLE_DIR="$BUILD_DIR/PrinterLauncher_PrinterLauncher.bundle"
+if [ -d "$BUNDLE_DIR" ]; then
+  cp -r "$BUNDLE_DIR/." "$RESOURCES_DIR/"
+fi
+
 cat > "$INFO_PLIST" <<'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">

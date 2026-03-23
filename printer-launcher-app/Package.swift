@@ -16,7 +16,10 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "PrinterLauncher",
-            path: "Sources/PrinterLauncher"
+            path: "Sources/PrinterLauncher",
+            resources: [
+                .copy("Resources/printer_harness.py"),
+            ]
         ),
     ]
 )
