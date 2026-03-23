@@ -32,7 +32,7 @@ struct PrintService: Sendable {
         self.presetSource = presetSource
     }
 
-    private static func defaultHarnessURL() -> URL {
+    static func defaultHarnessURL() -> URL {
         // 앱 번들 안의 리소스 우선 탐색
         if let bundled = Bundle.main.url(forResource: "printer_harness", withExtension: "py") {
             return bundled
